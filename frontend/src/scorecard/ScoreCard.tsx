@@ -11,7 +11,7 @@ import FallOfWickets from './FallOfWickets'; // Import the FallOfWickets compone
 import ExtrasSummary from './extraSummry'; // Import the ExtrasSummary component
 
 export function ScoreCard() {
-  const Baseurl ="http://localhost:5000"
+  const Baseurl ="https://3.110.27.69:5000/api"
   const { matchId } = useParams();
   const [score, setScore] = useState(null);
   const [odds, setOdds] = useState(null);
