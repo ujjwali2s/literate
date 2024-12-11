@@ -48,7 +48,7 @@ const LiveMatches = () => {
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          Ind Vs Aus
+          Loading...
         </button>
       </div>
 
