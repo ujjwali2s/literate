@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/get_scorecard/:match_id?', async (req, res) => {
+app.get('/api/get_scorecard/:match_id?', async (req, res) => {
   const matchId = req.params.match_id || 55600973; // Default matchId if not provided
   const tokenUrl = "https://raw.githubusercontent.com/ujjwali2s/crictixx/refs/heads/main/toke.json"; // URL to fetch authToken
 
