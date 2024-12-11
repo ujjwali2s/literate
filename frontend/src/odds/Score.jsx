@@ -9,7 +9,7 @@ export default function App() {
   const Baseurl ="https://3.110.27.69:5000";
 
   const fetchEvents = () => {
-    fetch(`${Baseurl}/api/events`)
+    fetch(`/api/events`)
       .then((response) => {
         if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
