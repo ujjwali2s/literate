@@ -6,7 +6,7 @@ import EventCard from './components/EventCard';
 export default function App() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const Baseurl ="http://localhost:5000";
+  const Baseurl ="https://3.110.27.69:5000";
 
   const fetchEvents = () => {
     fetch(`${Baseurl}/api/events`)
