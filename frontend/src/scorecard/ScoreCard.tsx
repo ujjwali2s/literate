@@ -44,7 +44,7 @@ export function ScoreCard() {
         "Accept-Language": "en-US,en;q=0.5",
       };
 
-      const response = await axios.get(`${Baseurl}/api/get_odds/${matchId}`, { headers });
+      const response = await axios.get(`${Baseurl}/get_odds/${matchId}`, { headers });
       setOdds(response.data);
       setOddsLoading(false);
     } catch (err) {
