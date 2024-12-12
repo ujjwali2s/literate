@@ -166,7 +166,7 @@ export function ScoreCard() {
           </div>
         </div>
 
-        {/* Odds Section */}
+        <h1>Cricktixx</h1>
      
       </div>
     </div>
