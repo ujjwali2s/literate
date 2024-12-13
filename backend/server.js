@@ -6,6 +6,6 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(PORT,'http://127.0.0.1', () => {
+app.listen(PORT,'http://localhost', () => {
   console.log(`Server running on port ${PORT}`);
 });
