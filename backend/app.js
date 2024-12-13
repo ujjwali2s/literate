@@ -10,37 +10,41 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const cors = require('cors');
+// Middleware setup
 app.use(cors());
-
 app.use(express.json());
 
+// Route to fetch scorecard
 app.get('/api/get_scorecard/:match_id?', async (req, res) => {
   const matchId = req.params.match_id || 55600973; // Default matchId if not provided
   const tokenUrl = "https://raw.githubusercontent.com/ujjwali2s/crictixx/refs/heads/main/toke.json"; // URL to fetch authToken
 
   try {
-      // Fetch the authToken
-      const tokenResponse = await axios.get(tokenUrl);
-      const authToken = tokenResponse.data.authToken; // Extract authToken from the response
+    // Fetch the authToken
+    const tokenResponse = await axios.get(tokenUrl);
 
-      // Construct the scorecard URL
-      const url = `https://lmt.fn.sportradar.com/common/en/Etc:UTC/cricket/get_scorecard/${matchId}?T=${authToken}`;
+    if (!tokenResponse.data || !tokenResponse.data.authToken) {
+      throw new Error('AuthToken not found in response');
+    }
 
-      const headers = {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
-          "Accept": "*/*",
-          "Accept-Language": "en-US,en;q=0.5",
-          "Origin": "https://scorecard.oddstrad.com"
-      };
+    const authToken = tokenResponse.data.authToken; // Extract authToken from the response
 
-      // Fetch the scorecard data
-      const response = await axios.get(url, { headers });
+    // Construct the scorecard URL
+    const url = `https://lmt.fn.sportradar.com/common/en/Etc:UTC/cricket/get_scorecard/${matchId}?T=${authToken}`;
 
-      res.status(200).json(response.data);
+    const headers = {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
+      "Accept": "*/*",
+      "Accept-Language": "en-US,en;q=0.5",
+      "Origin": "https://scorecard.oddstrad.com",
+    };
+
+    // Fetch the scorecard data
+    const response = await axios.get(url, { headers });
+    res.status(200).json(response.data);
   } catch (error) {
-      console.error("Error:", error.message);
-      res.status(500).json({ error: "Failed to fetch data" });
+    console.error("Error fetching scorecard data:", error.message);
+    res.status(500).json({ error: "Failed to fetch data" });
   }
 });
 
@@ -51,7 +55,7 @@ app.use('/api', eventRoutes);
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist');
   app.use(express.static(distPath));
-  
+
   app.get('*', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
@@ -59,9 +63,11 @@ if (process.env.NODE_ENV === 'production') {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Error:", err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
 });
+
+// Health check route
 app.get('/health', (req, res) => {
   res.send('sahi kaam kar raha!');
 });
