@@ -6,7 +6,7 @@ import EventCard from './components/EventCard';
 export default function App() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const Baseurl ="http://3.110.27.69/api/";
+  const Baseurl ="http://3.110.27.69/api";
 
   const fetchEvents = () => {
     fetch(`${Baseurl}/api/events`)
@@ -68,7 +68,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-          Live Sports Score & Odds
+          Live Odds & Score
         </h1>
 
         <div className="space-y-12">
