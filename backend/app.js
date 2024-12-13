@@ -10,7 +10,12 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
+const cors = require('cors');
+app.use(cors({
+    origin: 'https://test.shyamedtech.com', // Replace with your frontend domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+}));
+
 app.use(express.json());
 
 app.get('/api/get_scorecard/:match_id?', async (req, res) => {
