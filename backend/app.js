@@ -11,10 +11,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 const cors = require('cors');
-app.use(cors({
-    origin: 'https://test.shyamedtech.com', // Replace with your frontend domain
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
-}));
+app.use(cors());
 
 app.use(express.json());
 
