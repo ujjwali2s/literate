@@ -1,31 +1,49 @@
-import React, { useState } from 'react';
-import DashPlayer from './Live';
-import Html5Player from './Live2';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import LiveMatch from './Live';
+import ScoreCard from './Live2';
 
-const VideoPlayer = () => {
-  const [useDashPlayer, setUseDashPlayer] = useState(true);
+const App = () => {
+  const { matchId } = useParams(); // Get the matchId from the route
+  const [scoreAvailable, setScoreAvailable] = useState(false);
 
-  const dashVideoUrl = 'https://d1yws6emo43ny.cloudfront.net/CH5/masterCH5.mpd';
-  const html5FallbackUrl = 'https://d1yws6emo43ny.cloudfront.net/CH5/masterCH5.mp4';
+  // Check if scorecard data is available
+  const checkScoreAvailability = async () => {
+    try {
+      const response = await fetch(`http://3.110.27.69/api/api/get_scorecard/53500637`);
+      const data = await response.json();
 
-  const handleDashError = () => {
-    console.error('Switching to HTML5 fallback due to Dash.js error');
-    setUseDashPlayer(false);
+      // Check if valid scorecard data is returned
+      if (data?.doc?.[0]?.data?.score?.innings) {
+        setScoreAvailable(true);
+      } else {
+        setScoreAvailable(false);
+      }
+    } catch (err) {
+      console.error('Error checking score availability:', err);
+      setScoreAvailable(false);
+    }
   };
 
-  const handleRetryWithDash = () => {
-    setUseDashPlayer(true); // Retry Dash.js
-  };
+  useEffect(() => {
+    checkScoreAvailability();
+  }, [matchId]);
 
   return (
-    <div className="video-container">
-      {useDashPlayer ? (
-        <DashPlayer videoUrl={dashVideoUrl} onError={handleDashError} />
+    <div>
+     <h2>Ind Vs Aus</h2>
+      <LiveMatch />
+
+      
+      {scoreAvailable ? (
+        <ScoreCard />
       ) : (
-        <Html5Player fallbackUrl={html5FallbackUrl} onRetry={handleRetryWithDash} />
+        <div style={{ textAlign: 'center', marginTop: '20px', color: 'red' }}>
+          Scorecard data is currently unavailable. Showing the live match video only.
+        </div>
       )}
     </div>
   );
 };
 
-export default VideoPlayer;
+export default App;
